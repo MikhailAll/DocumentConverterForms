@@ -34,6 +34,7 @@ namespace DocumentConverterForms.Forms
         {
             var outputFilePath =
                 Path.Combine(Properties.Settings.Default.OutputFilePath, $"(Converted) {Path.GetFileName(_fileName)}");
+            File.Delete(outputFilePath);
             File.Copy(_fileName, outputFilePath);
             var saveProvider = new ExcelDataProvider(outputFilePath);
             saveProvider.SaveData(_profile, _subjects.ToList());
@@ -44,14 +45,14 @@ namespace DocumentConverterForms.Forms
             Close();
         }
 
-        private void dgvPreviewSubjectsData_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            dgvPreviewSemesterData.DataSource = (dgvPreviewSubjectsData.CurrentRow.DataBoundItem as Subject).Semesters;
-        }
-
         private void PreviewDataForm_Load(object sender, EventArgs e)
         {
             dgvPreviewSubjectsData.DataSource = _subjects;
+        }
+
+        private void dgvPreviewSubjectsData_SelectionChanged(object sender, EventArgs e)
+        {
+            dgvPreviewSemesterData.DataSource = (dgvPreviewSubjectsData.CurrentRow.DataBoundItem as Subject).Semesters;
         }
     }
 }

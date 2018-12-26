@@ -65,7 +65,7 @@ namespace DocumentConverterForms.Forms
             }
         }
 
-        private void bSelectFilePrev_Click(object sender, EventArgs e)
+        private void bSelectFilePreview_Click(object sender, EventArgs e)
         {
             try
             {
@@ -90,11 +90,7 @@ namespace DocumentConverterForms.Forms
             {
                 MessageBox.Show("Профиль не выбран", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (ArgumentException)
-            {
-                MessageBox.Show("Неверный путь к файлу", "Ошибка", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+
             catch (ApplicationException)
             {
                 MessageBox.Show("Путь для конвертированных файлов не установлен", "Ошибка", MessageBoxButtons.OK,

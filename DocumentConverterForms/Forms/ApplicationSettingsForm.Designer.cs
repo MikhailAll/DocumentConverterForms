@@ -66,7 +66,7 @@
             this.lConvertedFilesFolder.Location = new System.Drawing.Point(12, 75);
             this.lConvertedFilesFolder.Name = "lConvertedFilesFolder";
             this.lConvertedFilesFolder.Size = new System.Drawing.Size(356, 20);
-            this.lConvertedFilesFolder.TabIndex = 2;
+            this.lConvertedFilesFolder.TabIndex = 0;
             this.lConvertedFilesFolder.Text = "Путь к папке для конвертированных файлов:";
             // 
             // bOpenXmlFilesFolder
@@ -74,7 +74,7 @@
             this.bOpenXmlFilesFolder.Location = new System.Drawing.Point(385, 32);
             this.bOpenXmlFilesFolder.Name = "bOpenXmlFilesFolder";
             this.bOpenXmlFilesFolder.Size = new System.Drawing.Size(113, 26);
-            this.bOpenXmlFilesFolder.TabIndex = 4;
+            this.bOpenXmlFilesFolder.TabIndex = 2;
             this.bOpenXmlFilesFolder.Text = "Открыть";
             this.bOpenXmlFilesFolder.UseVisualStyleBackColor = true;
             this.bOpenXmlFilesFolder.Click += new System.EventHandler(this.bOpenXmlFilesFolder_Click);
@@ -84,7 +84,7 @@
             this.bOpenConvertedFilesFolder.Location = new System.Drawing.Point(385, 98);
             this.bOpenConvertedFilesFolder.Name = "bOpenConvertedFilesFolder";
             this.bOpenConvertedFilesFolder.Size = new System.Drawing.Size(113, 26);
-            this.bOpenConvertedFilesFolder.TabIndex = 5;
+            this.bOpenConvertedFilesFolder.TabIndex = 4;
             this.bOpenConvertedFilesFolder.Text = "Открыть";
             this.bOpenConvertedFilesFolder.UseVisualStyleBackColor = true;
             this.bOpenConvertedFilesFolder.Click += new System.EventHandler(this.bOpenConvertedFilesFolder_Click);
@@ -94,15 +94,16 @@
             this.bSave.Location = new System.Drawing.Point(340, 143);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(158, 34);
-            this.bSave.TabIndex = 6;
+            this.bSave.TabIndex = 5;
             this.bSave.Text = "Сохранить";
             this.bSave.UseVisualStyleBackColor = true;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
-            // ApplicationSettings
+            // ApplicationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(520, 189);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.bOpenConvertedFilesFolder);
@@ -114,7 +115,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ApplicationSettingsForm";
-            this.Text = "ApplicationSettings";
+            this.Text = "Настройки";
             this.Load += new System.EventHandler(this.ApplicationSettings_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

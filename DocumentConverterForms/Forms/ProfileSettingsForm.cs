@@ -175,7 +175,7 @@ namespace DocumentConverterForms.Forms
             if (profilesBindingSource.Current is Profile profile)
             {
                 lbExceptions.DataSource = profile.ExcelParseSettings.ParseExceptions;
-                lbSemesters.DataSource = profile.ExcelParseSettings.SemesterSettings;
+                lbSemesters.DataSource = profile.ExcelParseSettings.SemesterSettings; nudSemesterNumber.DataBindings.Clear();
             }
         }
 
@@ -193,6 +193,12 @@ namespace DocumentConverterForms.Forms
                     Consultation = tbSemesterConsultation.Text
                 };
                 AddSemester(profile, semesterSettings);
+
+                nudSemesterNumber.Value = 0;
+                tbSemesterLectures.Clear();
+                tbSemesterPracticalWorks.Clear();
+                tbSemesterLaboratoryWorks.Clear();
+                tbSemesterConsultation.Clear();
             }
             catch (NullReferenceException)
             {

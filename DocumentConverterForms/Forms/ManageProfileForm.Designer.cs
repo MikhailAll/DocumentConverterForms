@@ -80,7 +80,7 @@
             this.bRemoveProfile.Location = new System.Drawing.Point(254, 221);
             this.bRemoveProfile.Name = "bRemoveProfile";
             this.bRemoveProfile.Size = new System.Drawing.Size(153, 55);
-            this.bRemoveProfile.TabIndex = 4;
+            this.bRemoveProfile.TabIndex = 6;
             this.bRemoveProfile.Text = "Удалить профиль";
             this.bRemoveProfile.UseVisualStyleBackColor = true;
             this.bRemoveProfile.Click += new System.EventHandler(this.bRemoveProfile_Click);
@@ -90,7 +90,7 @@
             this.bEditProfileName.Location = new System.Drawing.Point(254, 161);
             this.bEditProfileName.Name = "bEditProfileName";
             this.bEditProfileName.Size = new System.Drawing.Size(153, 54);
-            this.bEditProfileName.TabIndex = 6;
+            this.bEditProfileName.TabIndex = 5;
             this.bEditProfileName.Text = "Изменить имя профиля";
             this.bEditProfileName.UseVisualStyleBackColor = true;
             this.bEditProfileName.Click += new System.EventHandler(this.bEditProfileName_Click);
@@ -100,13 +100,14 @@
             this.tbEditProfileName.Location = new System.Drawing.Point(254, 129);
             this.tbEditProfileName.Name = "tbEditProfileName";
             this.tbEditProfileName.Size = new System.Drawing.Size(153, 26);
-            this.tbEditProfileName.TabIndex = 5;
+            this.tbEditProfileName.TabIndex = 4;
             // 
             // ManageProfileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(438, 292);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(418, 292);
             this.Controls.Add(this.bEditProfileName);
             this.Controls.Add(this.tbEditProfileName);
             this.Controls.Add(this.bRemoveProfile);
@@ -117,7 +118,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ManageProfileForm";
-            this.Text = "ManageProfileForm";
+            this.Text = "Управление профилями";
             this.Load += new System.EventHandler(this.ManageProfileForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.profilesBindingSource)).EndInit();
             this.ResumeLayout(false);
