@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using DocumentConverterForms.Xml;
+using DocumentConverterForms.Data;
+using DocumentConverterForms.ExcelData;
+using DocumentConverterForms.Models;
 
 namespace DocumentConverterForms.Forms
 {
     public partial class PreviewDataForm : Form
     {
-        private BindingList<Subject> _subjects;
-        private Profile _profile;
-        private string _fileName;
+        private readonly BindingList<Subject> _subjects;
+        private readonly Profile _profile;
+        private readonly string _fileName;
 
         public PreviewDataForm()
         {
@@ -39,9 +37,7 @@ namespace DocumentConverterForms.Forms
             var saveProvider = new ExcelDataProvider(outputFilePath);
             saveProvider.SaveData(_profile, _subjects.ToList());
 
-            var xmlString = XmlDataSerializer.Serialize(_profile);
-            XmlFileIO.WriteXmlFile(xmlString,
-                Path.Combine(Properties.Settings.Default.XmlFilePath, $"{_profile.Name}Profile.xml"));
+            ProfilesRepository.SaveProfileSettings(_profile);
             Close();
         }
 

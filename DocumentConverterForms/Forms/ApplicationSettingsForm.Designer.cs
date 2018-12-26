@@ -1,4 +1,4 @@
-﻿namespace DocumentConverterForms
+﻿namespace DocumentConverterForms.Forms
 {
     partial class ApplicationSettingsForm
     {

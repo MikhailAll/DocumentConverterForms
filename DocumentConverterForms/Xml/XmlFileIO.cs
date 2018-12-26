@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace DocumentConverterForms.Xml
 {
-    static class XmlFileIO
+    public static class XmlFileIO
     {
         public static void WriteXmlFile(string xmlData, string filePath)
         {
@@ -27,14 +22,11 @@ namespace DocumentConverterForms.Xml
 
         public static string ReadXmlFile(string filePath)
         {
-            var result = "";
-
             using (var reader = new StreamReader(filePath))
             {
-                result = reader.ReadToEnd();
+                var result = reader.ReadToEnd();
+                return result;
             }
-
-            return result;
         }
     }
 }

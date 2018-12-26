@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
-namespace DocumentConverterForms
+namespace DocumentConverterForms.Models
 {
     public class Semester : ICloneable
     {
+        [DisplayName("Номер")]
         public int SemesterNumber { get; set; }
+        [DisplayName("ЛК")]
         public int Lectures { get; set; }
+        [DisplayName("ПЗ")]
         public int PracticalWorks { get; set; }
+        [DisplayName("ЛБ")]
         public int LaboratoryWorks { get; set; }
+        [DisplayName("Консультации")]
         public int Consultation { get; set; }
 
         public object Clone()

@@ -98,6 +98,7 @@
             this.bSelectFile.TabIndex = 4;
             this.bSelectFile.Text = "Выбрать файл для конвертации";
             this.bSelectFile.UseVisualStyleBackColor = true;
+            this.bSelectFile.Click += new System.EventHandler(this.bSelectFile_Click);
             // 
             // bSelectFilePreview
             // 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DocumentConverterForms.Models;
 
-namespace DocumentConverterForms
+namespace DocumentConverterForms.ExcelData
 {
-    class QueryBuilder
+    public class QueryBuilder
     {
         private readonly string _sheetName;
         private readonly Profile _profile;
@@ -25,7 +23,8 @@ namespace DocumentConverterForms
 
         public string GetSubjectNameQuery()
         {
-            var query = $"SELECT * FROM [{_sheetName}{_profile.ExcelParseSettings.SubjectName}:{_profile.ExcelParseSettings.SubjectName}]";
+            var query =
+                $"SELECT * FROM [{_sheetName}{_profile.ExcelParseSettings.SubjectName}:{_profile.ExcelParseSettings.SubjectName}]";
             return query;
         }
 
@@ -39,7 +38,6 @@ namespace DocumentConverterForms
 
             return null;
         }
-
 
         public Dictionary<string, string> BuildInsertQueries(Subject subject)
         {
@@ -57,12 +55,18 @@ namespace DocumentConverterForms
                 //{"SelfEducation", $"UPDATE [{_sheetName}{_profile.ExcelParseSettings.SelfEducation}{subject.RowIndex}:{_profile.ExcelParseSettings.SelfEducation}{subject.RowIndex}] SET F1 = '{subject.SelfEducation}'"}
             };
 
-            for (int i = 0; i < subject.Semesters.Count; i++)
+            for (var i = 0; i < subject.Semesters.Count; i++)
             {
-                queryDictionary.Add($"{subject.Semesters[i].SemesterNumber}Lectures", $"UPDATE [{_sheetName}{_profile.ExcelParseSettings.SemesterSettings[i].Lectures}{subject.RowIndex}:{_profile.ExcelParseSettings.SemesterSettings[i].Lectures}{subject.RowIndex}] SET F1 = '{subject.Semesters[i].Lectures}'");
-                queryDictionary.Add($"{subject.Semesters[i].SemesterNumber}PracticalWorks", $"UPDATE [{_sheetName}{_profile.ExcelParseSettings.SemesterSettings[i].PracticalWorks}{subject.RowIndex}:{_profile.ExcelParseSettings.SemesterSettings[i].PracticalWorks}{subject.RowIndex}] SET F1 = '{subject.Semesters[i].PracticalWorks}'");
-                queryDictionary.Add($"{subject.Semesters[i].SemesterNumber}LaboratoryWorks", $"UPDATE [{_sheetName}{_profile.ExcelParseSettings.SemesterSettings[i].LaboratoryWorks}{subject.RowIndex}:{_profile.ExcelParseSettings.SemesterSettings[i].LaboratoryWorks}{subject.RowIndex}] SET F1 = '{subject.Semesters[i].LaboratoryWorks}'");
-                queryDictionary.Add($"{subject.Semesters[i].SemesterNumber}Consultation", $"UPDATE [{_sheetName}{_profile.ExcelParseSettings.SemesterSettings[i].Consultation}{subject.RowIndex}:{_profile.ExcelParseSettings.SemesterSettings[i].Consultation}{subject.RowIndex}] SET F1 = '{subject.Semesters[i].Consultation}'");
+                var semesterNumber = subject.Semesters[i].SemesterNumber;
+                var parseSettings = _profile.ExcelParseSettings.SemesterSettings.FirstOrDefault(s => s.SemesterNumber == semesterNumber);
+                queryDictionary.Add($"{semesterNumber}Lectures",
+                    $"UPDATE [{_sheetName}{parseSettings.Lectures}{subject.RowIndex + 1}:{parseSettings.Lectures}{subject.RowIndex + 1}] SET F1 = '{subject.Semesters[i].Lectures}'");
+                queryDictionary.Add($"{semesterNumber}PracticalWorks",
+                    $"UPDATE [{_sheetName}{parseSettings.PracticalWorks}{subject.RowIndex + 1}:{parseSettings.PracticalWorks}{subject.RowIndex + 1}] SET F1 = '{subject.Semesters[i].PracticalWorks}'");
+                queryDictionary.Add($"{semesterNumber}LaboratoryWorks",
+                    $"UPDATE [{_sheetName}{parseSettings.LaboratoryWorks}{subject.RowIndex + 1}:{parseSettings.LaboratoryWorks}{subject.RowIndex + 1}] SET F1 = '{subject.Semesters[i].LaboratoryWorks}'");
+                queryDictionary.Add($"{semesterNumber}Consultation",
+                    $"UPDATE [{_sheetName}{parseSettings.Consultation}{subject.RowIndex + 1}:{parseSettings.Consultation}{subject.RowIndex + 1}] SET F1 = '{subject.Semesters[i].Consultation}'");
             }
 
             return queryDictionary;
@@ -98,8 +102,8 @@ namespace DocumentConverterForms
             };
 
             queryDictionary = queryDictionary
-   .Where(query => !string.IsNullOrWhiteSpace(query.Value))
-    .ToDictionary(item => item.Key, item => item.Value);
+                .Where(query => !string.IsNullOrWhiteSpace(query.Value))
+                .ToDictionary(item => item.Key, item => item.Value);
 
             return queryDictionary;
         }
@@ -118,7 +122,7 @@ namespace DocumentConverterForms
                 if (GetSelectQuery(semester.PracticalWorks) != null)
                     queryList.Add(GetSelectQuery(semester.PracticalWorks));
                 if (GetSelectQuery(semester.Consultation) != null) queryList.Add(GetSelectQuery(semester.Consultation));
-                
+
                 queryDictionary.Add(semester.SemesterNumber, queryList);
             }
 

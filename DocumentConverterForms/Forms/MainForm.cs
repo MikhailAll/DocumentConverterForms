@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using DocumentConverterForms.Xml;
+using DocumentConverterForms.Data;
+using DocumentConverterForms.ExcelData;
+using DocumentConverterForms.Models;
 
 namespace DocumentConverterForms.Forms
 {
@@ -19,32 +16,27 @@ namespace DocumentConverterForms.Forms
         public MainForm()
         {
             InitializeComponent();
-
-        }
-
-        private void Test()
-        {
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            StaticData.InitializeAppData();
+            ProfilesRepository.InitializeAppData();
 
             dgvProfiles.AutoGenerateColumns = false;
             dgvProfiles.Columns["cProfileName"].DataPropertyName = "Name";
             dgvProfiles.DataSource = profilesBindingSource;
 
             profilesBindingSource.ListChanged += RecolorGrid;
-            profilesBindingSource.DataSource = StaticData.Profiles;
+            profilesBindingSource.DataSource = ProfilesRepository.Profiles;
 
         }
 
         private void RecolorGrid(object sender, ListChangedEventArgs e)
         {
-            for (int i = 0; i < profilesBindingSource.Count; i++)
+            for (var i = 0; i < profilesBindingSource.Count; i++)
             {
                 var profile = profilesBindingSource[i] as Profile;
-                if (profile.ProfileKey == 0)
+                if (string.IsNullOrEmpty(profile.ProfileKey))
                     dgvProfiles[0, i].Style.ForeColor = Color.Red;
             }
         }
@@ -57,9 +49,7 @@ namespace DocumentConverterForms.Forms
                 openFileDialog.Filter = @"Excel файлы (*.xls, *.xlsx) | *.xls; *.xlsx;";
                 openFileDialog.Title = @"Выберите файл для конвертации";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
                     filePath = openFileDialog.FileName;
-                }
 
                 return filePath;
             }
@@ -85,6 +75,7 @@ namespace DocumentConverterForms.Forms
                 {
                     previewDataForm.ShowDialog();
                 }
+                profilesBindingSource.ResetBindings(true);
             }
             catch (NullReferenceException)
             {
@@ -123,8 +114,14 @@ namespace DocumentConverterForms.Forms
                 }
 
                 if (string.IsNullOrEmpty(folderPath)) return;
-
                 var excelFiles = Directory.EnumerateFiles(folderPath);
+
+                if (excelFiles.Count() == 0)
+                {
+                    MessageBox.Show("В папке не найдены excel файлы", "Инфо", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    return;
+                }
 
                 foreach (var file in excelFiles)
                 {
@@ -132,30 +129,38 @@ namespace DocumentConverterForms.Forms
                     {
                         var excelReadDataProvider = new ExcelDataProvider(Path.Combine(folderPath, file));
 
-                        foreach (var profile in StaticData.Profiles)
+                        foreach (var profile in ProfilesRepository.Profiles)
                         {
-
-                            if (excelReadDataProvider.IsProfileMatch(profile))
+                            try
                             {
-                                var subjects = new DataConverter(profile, excelReadDataProvider.LoadData(profile))
-                                    .Convert();
-                                File.Copy(Path.Combine(folderPath, file),
-                                    Path.Combine(outputFolderPath, $"(Converted){file}"));
-                                var excelWriteDataProvider =
-                                    new ExcelDataProvider(Path.Combine(outputFolderPath, $"(Converted){file}"));
-                                excelWriteDataProvider.SaveData(profile, subjects);
+                                if (excelReadDataProvider.IsProfileMatch(profile))
+                                {
+                                    var subjects = new DataConverter(profile, excelReadDataProvider.LoadData(profile))
+                                        .Convert();
+                                    var outputFilePath =
+                                        Path.Combine(Properties.Settings.Default.OutputFilePath, $"(Converted) {Path.GetFileName(file)}");
+                                    File.Delete(outputFilePath);
+                                    File.Copy(file, outputFilePath);
+                                    var excelWriteDataProvider =
+                                        new ExcelDataProvider(outputFolderPath);
+                                    excelWriteDataProvider.SaveData(profile, subjects);
+                                }
+                            }
+                            catch (OleDbException)
+                            {
+                                continue;
+                            }
+                            catch (IndexOutOfRangeException)
+                            {
+                                continue;
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (ArgumentException)
                     {
                         continue;
                     }
                 }
-                
-                if (excelFiles.Count() == 0)
-                    MessageBox.Show("В папке не найдены excel файлы", "Инфо", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
             }
             
             catch (ApplicationException)
@@ -172,11 +177,16 @@ namespace DocumentConverterForms.Forms
                 applicationSettingsForm.ShowDialog();
             }
 
-            if (StaticData.Profiles.Count == 0)
+            if (ProfilesRepository.Profiles.Count == 0)
             {
-                StaticData.InitializeAppData();
+                ProfilesRepository.InitializeAppData();
                 profilesBindingSource.ResetBindings(true);
             }
+        }
+
+        private void bSelectFile_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
