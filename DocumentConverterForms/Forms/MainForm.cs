@@ -186,7 +186,45 @@ namespace DocumentConverterForms.Forms
 
         private void bSelectFile_Click(object sender, EventArgs e)
         {
+            try
+            {
+                var filePath = GetFilePath();
+                var excelReadDataProvider = new ExcelDataProvider(filePath);
 
+                foreach (var profile in ProfilesRepository.Profiles)
+                {
+                    try
+                    {
+                        if (excelReadDataProvider.IsProfileMatch(profile))
+                        {
+                            var subjects = new DataConverter(profile, excelReadDataProvider.LoadData(profile))
+                                .Convert();
+                            var outputFilePath =
+                                Path.Combine(Properties.Settings.Default.OutputFilePath,
+                                    $"(Converted) {Path.GetFileName(filePath)}");
+                            File.Delete(outputFilePath);
+                            File.Copy(filePath, outputFilePath);
+                            var excelWriteDataProvider =
+                                new ExcelDataProvider(outputFilePath);
+                            excelWriteDataProvider.SaveData(profile, subjects);
+                        }
+                    }
+                    catch (OleDbException)
+                    {
+                        continue;
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            catch (ApplicationException)
+            {
+                MessageBox.Show("Путь для конвертированных файлов не установлен", "Ошибка", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }
