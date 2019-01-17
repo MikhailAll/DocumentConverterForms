@@ -67,10 +67,10 @@ namespace DocumentConverterForms.ExcelData
             var creditCount = 0;
             var cwCount = 0;
             double ectsCount = 0;
-            double coefficient;
+            double coefficient = 0;
 
             foreach (var subject in subjects)
-                if (subject.Semesters.Any(s=> s.SemesterNumber == semesterSetting.SemesterNumber))
+                if (subject.IsAffectingCalculation && subject.Semesters.Any(s=> s.SemesterNumber == semesterSetting.SemesterNumber))
                 {
                     if (subject.ExamList.Contains(semesterSetting.SemesterNumber))
                         examCount ++;
@@ -82,8 +82,8 @@ namespace DocumentConverterForms.ExcelData
                     ectsCount += subject.ECTS / subject.Semesters.Count;
                 }
 
-            if (semesterSetting.SemesterNumber < 5)
-                coefficient = (135 - examCount * 18 - creditCount * 2 - cwCount * 6) / ectsCount;
+            if (semesterSetting.SemesterNumber > 4 || _profile.ExcelParseSettings.IsMaster)
+                coefficient = (180 - examCount * 18 - creditCount * 2 - cwCount * 6) / ectsCount;
             else
                 coefficient = (135 - examCount * 18 - creditCount * 2 - cwCount * 6) / ectsCount;
 

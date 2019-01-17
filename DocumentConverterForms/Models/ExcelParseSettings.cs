@@ -19,6 +19,7 @@ namespace DocumentConverterForms.Models
         public string LaboratoryWorks { get; set; }
         public string Consultation { get; set; }
         public string SelfEducation { get; set; }
+        public bool IsMaster { get; set; }
 
         public BindingList<SemesterSettings> SemesterSettings { get; set; }
         public BindingList<string> ParseExceptions { get; set; }

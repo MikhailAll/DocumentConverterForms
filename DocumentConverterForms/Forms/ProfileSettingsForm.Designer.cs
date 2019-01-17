@@ -33,12 +33,17 @@
             this.bManageProfiles = new System.Windows.Forms.Button();
             this.lProfiles = new System.Windows.Forms.Label();
             this.gSubjects = new System.Windows.Forms.GroupBox();
+            this.tbException = new System.Windows.Forms.TextBox();
             this.tbSelfEducation = new System.Windows.Forms.TextBox();
             this.lSelfEducation = new System.Windows.Forms.Label();
+            this.bRemoveException = new System.Windows.Forms.Button();
             this.tbConsultation = new System.Windows.Forms.TextBox();
             this.lConsultation = new System.Windows.Forms.Label();
+            this.bAddException = new System.Windows.Forms.Button();
             this.tbLaboratoryWorks = new System.Windows.Forms.TextBox();
+            this.lExeptions = new System.Windows.Forms.Label();
             this.lLaboratoryWorks = new System.Windows.Forms.Label();
+            this.lbExceptions = new System.Windows.Forms.ListBox();
             this.tbPracticalWorks = new System.Windows.Forms.TextBox();
             this.lPracticalWorks = new System.Windows.Forms.Label();
             this.tbLectures = new System.Windows.Forms.TextBox();
@@ -71,6 +76,7 @@
             this.lSheetNumber = new System.Windows.Forms.Label();
             this.nudSheetNumber = new System.Windows.Forms.NumericUpDown();
             this.gSemesters = new System.Windows.Forms.GroupBox();
+            this.cbMaster = new System.Windows.Forms.CheckBox();
             this.lSemesterNumber = new System.Windows.Forms.Label();
             this.lSemesterConsultation = new System.Windows.Forms.Label();
             this.tbSemesterConsultation = new System.Windows.Forms.TextBox();
@@ -84,11 +90,6 @@
             this.lbSemesters = new System.Windows.Forms.ListBox();
             this.tbSemesterPracticalWorks = new System.Windows.Forms.TextBox();
             this.tbSemesterLectures = new System.Windows.Forms.TextBox();
-            this.lbExceptions = new System.Windows.Forms.ListBox();
-            this.lExeptions = new System.Windows.Forms.Label();
-            this.bAddException = new System.Windows.Forms.Button();
-            this.bRemoveException = new System.Windows.Forms.Button();
-            this.tbException = new System.Windows.Forms.TextBox();
             this.gSubjects.SuspendLayout();
             this.gConvertation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinPracticalWorksCount)).BeginInit();
@@ -168,6 +169,13 @@
             this.gSubjects.TabStop = false;
             this.gSubjects.Text = "Настройка столбцов ";
             // 
+            // tbException
+            // 
+            this.tbException.Location = new System.Drawing.Point(278, 452);
+            this.tbException.Name = "tbException";
+            this.tbException.Size = new System.Drawing.Size(138, 26);
+            this.tbException.TabIndex = 19;
+            // 
             // tbSelfEducation
             // 
             this.tbSelfEducation.Location = new System.Drawing.Point(319, 379);
@@ -184,6 +192,17 @@
             this.lSelfEducation.Size = new System.Drawing.Size(274, 20);
             this.lSelfEducation.TabIndex = 0;
             this.lSelfEducation.Text = "Часы самостоятельного обучения:";
+            // 
+            // bRemoveException
+            // 
+            this.bRemoveException.Location = new System.Drawing.Point(278, 528);
+            this.bRemoveException.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.bRemoveException.Name = "bRemoveException";
+            this.bRemoveException.Size = new System.Drawing.Size(138, 28);
+            this.bRemoveException.TabIndex = 21;
+            this.bRemoveException.Text = "Удалить";
+            this.bRemoveException.UseVisualStyleBackColor = true;
+            this.bRemoveException.Click += new System.EventHandler(this.bRemoveException_Click);
             // 
             // tbConsultation
             // 
@@ -202,12 +221,33 @@
             this.lConsultation.TabIndex = 0;
             this.lConsultation.Text = "Консультации:";
             // 
+            // bAddException
+            // 
+            this.bAddException.Location = new System.Drawing.Point(278, 490);
+            this.bAddException.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.bAddException.Name = "bAddException";
+            this.bAddException.Size = new System.Drawing.Size(138, 28);
+            this.bAddException.TabIndex = 20;
+            this.bAddException.Text = "Добавить";
+            this.bAddException.UseVisualStyleBackColor = true;
+            this.bAddException.Click += new System.EventHandler(this.bAddException_Click);
+            // 
             // tbLaboratoryWorks
             // 
             this.tbLaboratoryWorks.Location = new System.Drawing.Point(319, 315);
             this.tbLaboratoryWorks.Name = "tbLaboratoryWorks";
             this.tbLaboratoryWorks.Size = new System.Drawing.Size(138, 26);
             this.tbLaboratoryWorks.TabIndex = 15;
+            // 
+            // lExeptions
+            // 
+            this.lExeptions.AutoSize = true;
+            this.lExeptions.Location = new System.Drawing.Point(12, 419);
+            this.lExeptions.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lExeptions.Name = "lExeptions";
+            this.lExeptions.Size = new System.Drawing.Size(107, 20);
+            this.lExeptions.TabIndex = 0;
+            this.lExeptions.Text = "Исключения:";
             // 
             // lLaboratoryWorks
             // 
@@ -218,6 +258,15 @@
             this.lLaboratoryWorks.Size = new System.Drawing.Size(186, 20);
             this.lLaboratoryWorks.TabIndex = 0;
             this.lLaboratoryWorks.Text = "Лабораторные работы:";
+            // 
+            // lbExceptions
+            // 
+            this.lbExceptions.FormattingEnabled = true;
+            this.lbExceptions.ItemHeight = 20;
+            this.lbExceptions.Location = new System.Drawing.Point(16, 452);
+            this.lbExceptions.Name = "lbExceptions";
+            this.lbExceptions.Size = new System.Drawing.Size(255, 104);
+            this.lbExceptions.TabIndex = 0;
             // 
             // tbPracticalWorks
             // 
@@ -512,6 +561,16 @@
             this.gSemesters.TabStop = false;
             this.gSemesters.Text = "Настройка столбцов семестров:";
             // 
+            // cbMaster
+            // 
+            this.cbMaster.AutoSize = true;
+            this.cbMaster.Location = new System.Drawing.Point(766, 16);
+            this.cbMaster.Name = "cbMaster";
+            this.cbMaster.Size = new System.Drawing.Size(92, 24);
+            this.cbMaster.TabIndex = 29;
+            this.cbMaster.Text = "Магистр";
+            this.cbMaster.UseVisualStyleBackColor = true;
+            // 
             // lSemesterNumber
             // 
             this.lSemesterNumber.AutoSize = true;
@@ -623,60 +682,13 @@
             this.tbSemesterLectures.Size = new System.Drawing.Size(138, 26);
             this.tbSemesterLectures.TabIndex = 23;
             // 
-            // lbExceptions
-            // 
-            this.lbExceptions.FormattingEnabled = true;
-            this.lbExceptions.ItemHeight = 20;
-            this.lbExceptions.Location = new System.Drawing.Point(16, 452);
-            this.lbExceptions.Name = "lbExceptions";
-            this.lbExceptions.Size = new System.Drawing.Size(255, 104);
-            this.lbExceptions.TabIndex = 0;
-            // 
-            // lExeptions
-            // 
-            this.lExeptions.AutoSize = true;
-            this.lExeptions.Location = new System.Drawing.Point(12, 419);
-            this.lExeptions.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lExeptions.Name = "lExeptions";
-            this.lExeptions.Size = new System.Drawing.Size(107, 20);
-            this.lExeptions.TabIndex = 0;
-            this.lExeptions.Text = "Исключения:";
-            // 
-            // bAddException
-            // 
-            this.bAddException.Location = new System.Drawing.Point(278, 490);
-            this.bAddException.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.bAddException.Name = "bAddException";
-            this.bAddException.Size = new System.Drawing.Size(138, 28);
-            this.bAddException.TabIndex = 20;
-            this.bAddException.Text = "Добавить";
-            this.bAddException.UseVisualStyleBackColor = true;
-            this.bAddException.Click += new System.EventHandler(this.bAddException_Click);
-            // 
-            // bRemoveException
-            // 
-            this.bRemoveException.Location = new System.Drawing.Point(278, 528);
-            this.bRemoveException.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.bRemoveException.Name = "bRemoveException";
-            this.bRemoveException.Size = new System.Drawing.Size(138, 28);
-            this.bRemoveException.TabIndex = 21;
-            this.bRemoveException.Text = "Удалить";
-            this.bRemoveException.UseVisualStyleBackColor = true;
-            this.bRemoveException.Click += new System.EventHandler(this.bRemoveException_Click);
-            // 
-            // tbException
-            // 
-            this.tbException.Location = new System.Drawing.Point(278, 452);
-            this.tbException.Name = "tbException";
-            this.tbException.Size = new System.Drawing.Size(138, 26);
-            this.tbException.TabIndex = 19;
-            // 
             // ProfileSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1200, 659);
+            this.Controls.Add(this.cbMaster);
             this.Controls.Add(this.gSemesters);
             this.Controls.Add(this.nudSheetNumber);
             this.Controls.Add(this.lSheetNumber);
@@ -773,5 +785,6 @@
         private System.Windows.Forms.Button bAddException;
         private System.Windows.Forms.Label lExeptions;
         private System.Windows.Forms.ListBox lbExceptions;
+        private System.Windows.Forms.CheckBox cbMaster;
     }
 }

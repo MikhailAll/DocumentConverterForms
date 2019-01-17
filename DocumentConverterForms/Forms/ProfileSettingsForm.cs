@@ -45,6 +45,7 @@ namespace DocumentConverterForms.Forms
             tbLaboratoryWorks.DataBindings.Add("Text", profilesBindingSource, "ExcelParseSettings.LaboratoryWorks");
             tbConsultation.DataBindings.Add("Text", profilesBindingSource, "ExcelParseSettings.Consultation");
             tbSelfEducation.DataBindings.Add("Text", profilesBindingSource, "ExcelParseSettings.SelfEducation");
+            cbMaster.DataBindings.Add("Checked", profilesBindingSource, "ExcelParseSettings.IsMaster");
         }
 
         private void RecolorGrid(object sender, ListChangedEventArgs e)
@@ -134,7 +135,7 @@ namespace DocumentConverterForms.Forms
                     Lectures = tbSemesterLectures.Text,
                     LaboratoryWorks = tbSemesterLaboratoryWorks.Text,
                     PracticalWorks = tbSemesterPracticalWorks.Text,
-                    Consultation = tbSemesterConsultation.Text
+                    Consultation = tbSemesterConsultation.Text,
                 };
                 ProfilesRepository.AddSemester(profile, semesterSettings);
 

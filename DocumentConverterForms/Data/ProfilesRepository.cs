@@ -49,6 +49,7 @@ namespace DocumentConverterForms.Data
                 Name = profileName,
                 ExcelParseSettings = new ExcelParseSettings
                 {
+                    IsMaster = false,
                     ParseExceptions = new BindingList<string> {"ВСЬОГО", "РАЗОМ"},
                     SemesterSettings = new BindingList<SemesterSettings>()
                 },

@@ -9,6 +9,10 @@ namespace DocumentConverterForms.Models
     {
         [Browsable(false)]
         public int RowIndex { get; set; }
+        [Browsable(false)]
+        public bool IsAffectingCalculation { get; set; }
+        [Browsable(false)]
+        public bool IsHumanitarian { get; set; }
         [DisplayName("Дисциплина")]
         public string SubjectName { get; set; }
         [DisplayName("Зач")]
@@ -40,22 +44,24 @@ namespace DocumentConverterForms.Models
 
         public object Clone()
         {
-            return new Subject()
+            return new Subject
             {
-                RowIndex = this.RowIndex,
-                SubjectName = this.SubjectName,
-                CW = this.CW,
-                ECTS = this.ECTS,
-                TotalHours = this.TotalHours,
-                TotalClassroomHours = this.TotalClassroomHours,
-                Lectures = this.Lectures,
-                PracticalWorks = this.PracticalWorks,
-                LaboratoryWorks = this.LaboratoryWorks,
-                Consultation = this.Consultation,
-                SelfEducation = this.SelfEducation,
-                Semesters = this.Semesters.ConvertAll(semester => semester.Clone() as Semester),
-                CreditList = this.CreditList.ToList(),
-                ExamList = this.ExamList.ToList()
+                RowIndex = RowIndex,
+                IsAffectingCalculation = IsAffectingCalculation,
+                IsHumanitarian = IsHumanitarian,
+                SubjectName = SubjectName,
+                CW = CW,
+                ECTS = ECTS,
+                TotalHours = TotalHours,
+                TotalClassroomHours = TotalClassroomHours,
+                Lectures = Lectures,
+                PracticalWorks = PracticalWorks,
+                LaboratoryWorks = LaboratoryWorks,
+                Consultation = Consultation,
+                SelfEducation = SelfEducation,
+                Semesters = Semesters.ConvertAll(semester => semester.Clone() as Semester),
+                CreditList = CreditList.ToList(),
+                ExamList = ExamList.ToList()
             };
         }
     }

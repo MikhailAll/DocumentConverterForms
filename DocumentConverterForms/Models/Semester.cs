@@ -18,13 +18,13 @@ namespace DocumentConverterForms.Models
 
         public object Clone()
         {
-            return new Semester()
+            return new Semester
             {
-                SemesterNumber = this.SemesterNumber,
-                Lectures = this.Lectures,
-                PracticalWorks = this.PracticalWorks,
-                LaboratoryWorks = this.LaboratoryWorks,
-                Consultation = this.Consultation
+                SemesterNumber = SemesterNumber,
+                Lectures = Lectures,
+                PracticalWorks = PracticalWorks,
+                LaboratoryWorks = LaboratoryWorks,
+                Consultation = Consultation
             };
         }
     }

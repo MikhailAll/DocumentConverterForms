@@ -82,15 +82,33 @@ namespace DocumentConverterForms.ExcelData
                     .GetSubjectNameQuery();
 
                 var dataSet = GetDataSet(query, connection);
+                var dataIsBlock = false;
+                var dataIsFirstBlock = false;
+                var dataIsHumanitarian = false;
 
                 foreach (var dataRow in dataSet.Tables[0].AsEnumerable())
                 {
                     var data = dataRow.ItemArray[0].ToString().Trim();
-                    if (!string.IsNullOrEmpty(data) &&
-                        !profile.ExcelParseSettings.ParseExceptions.Any(s => data.Contains(s)))
-                        _subjects.Add(new Subject()
+
+                    if (data.ToLower().Contains("блок"))
+                        dataIsBlock = true;
+                    if (dataIsBlock && data.ToLower().Contains("1"))
+                        dataIsFirstBlock = true;
+                    if (data.ToLower().Contains("гуманітарні та соціально") && data.ToLower().Contains("вибіркові"))
+                        dataIsHumanitarian = true;
+                    if (data.ToLower().Contains("всього"))
+                    {
+                        dataIsBlock = false;
+                        dataIsFirstBlock = false;
+                        dataIsHumanitarian = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(data))
+                        _subjects.Add(new Subject
                         {
                             SubjectName = data, RowIndex = dataSet.Tables[0].Rows.IndexOf(dataRow),
+                            IsAffectingCalculation = !dataIsBlock || dataIsFirstBlock ,
+                            IsHumanitarian = dataIsHumanitarian,
                             Semesters = new List<Semester>(),
                             CreditList = new List<int>(),
                             ExamList = new List<int>()
@@ -101,7 +119,23 @@ namespace DocumentConverterForms.ExcelData
             }
         }
 
-        private void CleanBasicData()
+        private void SetCalculationAffectionForHumanitarianBlock(Profile profile)
+        {
+            _subjects.ForEach(subject =>
+            {
+                if (subject.IsHumanitarian)
+                    subject.IsAffectingCalculation = false;
+            });
+
+            foreach (var semesterSettings in profile.ExcelParseSettings.SemesterSettings)
+            {
+                var subject = _subjects.FirstOrDefault(s =>
+                    s.IsHumanitarian && s.Semesters[semesterSettings.SemesterNumber - 1].Lectures != 0);
+                if (subject != null) subject.IsAffectingCalculation = true;
+            }
+        }
+
+        private void CleanBasicData(Profile profile)
         {
             var cleanedSubjects = new List<Subject>(_subjects);
             foreach (var subject in _subjects)
@@ -117,6 +151,9 @@ namespace DocumentConverterForms.ExcelData
                     cleanedSubjects.Remove(subject);
 
                 if (subject.SubjectName.All(char.IsDigit))
+                    cleanedSubjects.Remove(subject);
+
+                if (profile.ExcelParseSettings.ParseExceptions.Any(s => subject.SubjectName.Contains(s)))
                     cleanedSubjects.Remove(subject);
             }
 
@@ -321,10 +358,11 @@ namespace DocumentConverterForms.ExcelData
                 profile.ProfileKey = GetProfileKey(profile);
 
             ParseBasicData(profile);
-            CleanBasicData();
+            CleanBasicData(profile);
             ParseCountData(profile);
             ParseCWData(profile);
             ParseSemesterData(profile);
+            SetCalculationAffectionForHumanitarianBlock(profile);
 
             return _subjects;
         }
